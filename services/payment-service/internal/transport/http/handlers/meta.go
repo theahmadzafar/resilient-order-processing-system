@@ -11,7 +11,6 @@ type metaHandler struct {
 }
 
 func NewMetaHandler() http.Handler {
-
 	return &metaHandler{}
 }
 

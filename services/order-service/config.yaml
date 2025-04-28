@@ -1,8 +1,7 @@
 server:
   host: 127.0.0.1
   port: 7610
-  readTimeout: 300s
-  writeTimeout: 300s
+  timeout: 300s 
 
 rpc:
   host: 127.0.0.1
@@ -12,3 +11,8 @@ rpc:
 
 logger:
   logLevel: error
+
+inventry:
+  host: 127.0.0.1
+  port: 7500
+  isSecure: false

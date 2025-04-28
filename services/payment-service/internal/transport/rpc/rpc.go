@@ -32,8 +32,7 @@ func StartUnsecureRPCServer(hdl *Handler) {
 }
 
 func setupUnsecureRouter(hdl api.InventryServer) *grpc.Server {
-	var s *grpc.Server
-	s = grpc.NewServer()
+	s := grpc.NewServer()
 
 	api.RegisterInventryServer(s, hdl)
 

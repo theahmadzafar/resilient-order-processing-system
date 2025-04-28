@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/theahmadzafar/resilient-order-processing-system/services/inventry-service/pkg/api"
+	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/pkg/api"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
@@ -31,11 +31,10 @@ func StartUnsecureRPCServer(hdl *Handler) {
 	}
 }
 
-func setupUnsecureRouter(hdl api.InventryServer) *grpc.Server {
-	var s *grpc.Server
-	s = grpc.NewServer()
+func setupUnsecureRouter(hdl api.OrderServer) *grpc.Server {
+	s := grpc.NewServer()
 
-	api.RegisterInventryServer(s, hdl)
+	api.RegisterOrderServer(s, hdl)
 
 	printServiceInterface(s.GetServiceInfo())
 

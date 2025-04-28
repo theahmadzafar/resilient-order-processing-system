@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.30.0--rc1
-// source: services/inventry-service/pkg/api/main.proto
+// source: services/order-service/pkg/inventry/main.proto
 
-package api
+package inventry
 
 import (
 	context "context"
@@ -75,15 +75,16 @@ func (c *inventryClient) HealthCheck(ctx context.Context, opts ...grpc.CallOptio
 type Inventry_HealthCheckClient = grpc.BidiStreamingClient[Status, Status]
 
 // InventryServer is the server API for Inventry service.
-// All implementations should embed UnimplementedInventryServer
+// All implementations must embed UnimplementedInventryServer
 // for forward compatibility.
 type InventryServer interface {
 	GetAvailableStocksByID(context.Context, *GetAvailableStocksByIDIn) (*GetAvailableStocksByIDOut, error)
 	BuyStocksByID(context.Context, *BuyStocksByIDIn) (*BuyStocksByIDOut, error)
 	HealthCheck(grpc.BidiStreamingServer[Status, Status]) error
+	mustEmbedUnimplementedInventryServer()
 }
 
-// UnimplementedInventryServer should be embedded to have
+// UnimplementedInventryServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
@@ -99,7 +100,8 @@ func (UnimplementedInventryServer) BuyStocksByID(context.Context, *BuyStocksByID
 func (UnimplementedInventryServer) HealthCheck(grpc.BidiStreamingServer[Status, Status]) error {
 	return status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
 }
-func (UnimplementedInventryServer) testEmbeddedByValue() {}
+func (UnimplementedInventryServer) mustEmbedUnimplementedInventryServer() {}
+func (UnimplementedInventryServer) testEmbeddedByValue()                  {}
 
 // UnsafeInventryServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to InventryServer will
@@ -186,5 +188,5 @@ var Inventry_ServiceDesc = grpc.ServiceDesc{
 			ClientStreams: true,
 		},
 	},
-	Metadata: "services/inventry-service/pkg/api/main.proto",
+	Metadata: "services/order-service/pkg/inventry/main.proto",
 }

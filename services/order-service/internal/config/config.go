@@ -11,15 +11,17 @@ import (
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/logger"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/transport/http"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/transport/rpc"
+	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/pkg/inventry"
 )
 
 var config *Config
 var once sync.Once
 
 type Config struct {
-	RPC    *rpc.Config  `validate:"required"`
-	Server *http.Config `validate:"required"`
-	Logger *logger.Config
+	RPC      *rpc.Config      `validate:"required"`
+	Server   *http.Config     `validate:"required"`
+	Inventry *inventry.Config `validate:"required"`
+	Logger   *logger.Config
 }
 
 func New() (*Config, error) {
@@ -33,16 +35,19 @@ func New() (*Config, error) {
 
 		if err := v.ReadInConfig(); err != nil {
 			initErr = fmt.Errorf("error reading config: %w", err)
+
 			return
 		}
 
 		if err := v.Unmarshal(&config); err != nil {
 			initErr = fmt.Errorf("error unmarshalling config: %w", err)
+
 			return
 		}
 
 		if err := parseSubConfig("rpc", &config.RPC, v); err != nil {
 			initErr = err
+
 			return
 		}
 
@@ -58,6 +63,13 @@ func New() (*Config, error) {
 
 		if err := validator.New().Struct(config); err != nil {
 			initErr = handleValidationError(err)
+
+			return
+		}
+
+		if err := parseSubConfig("inventry", &config.Inventry, v); err != nil {
+			initErr = err
+
 			return
 		}
 	})
@@ -85,7 +97,9 @@ func handleValidationError(err error) error {
 		for _, e := range validationErrs {
 			errStr.WriteString(fmt.Sprintf("validation failed for field '%s': %s\n", e.Field(), e.ActualTag()))
 		}
+
 		return fmt.Errorf("config validation failed: %s", errStr.String())
 	}
+
 	return fmt.Errorf("error validating config: %w", err)
 }

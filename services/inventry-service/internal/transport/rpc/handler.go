@@ -3,12 +3,14 @@ package rpc
 import (
 	"io"
 
+	"github.com/theahmadzafar/resilient-order-processing-system/services/inventry-service/internal/services"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/inventry-service/pkg/api"
 )
 
 type Handler struct {
 	api.InventryServer
-	cfg *Config
+	inventrySvc *services.InventryService
+	cfg         *Config
 }
 
 func (h *Handler) HealthCheck(stream api.Inventry_HealthCheckServer) error {
@@ -34,9 +36,11 @@ func (h *Handler) HealthCheck(stream api.Inventry_HealthCheckServer) error {
 
 func NewHandler(
 	cnf *Config,
+	inventrySvc *services.InventryService,
 ) *Handler {
 	h := &Handler{
-		cfg: cnf,
+		cfg:         cnf,
+		inventrySvc: inventrySvc,
 	}
 
 	return h

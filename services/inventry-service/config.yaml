@@ -1,8 +1,7 @@
 server:
   host: 127.0.0.1
   port: 7510
-  readTimeout: 300s
-  writeTimeout: 300s
+  timeout: 300s 
 
 rpc:
   host: 127.0.0.1

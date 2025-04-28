@@ -33,16 +33,19 @@ func New() (*Config, error) {
 
 		if err := v.ReadInConfig(); err != nil {
 			initErr = fmt.Errorf("error reading config: %w", err)
+
 			return
 		}
 
 		if err := v.Unmarshal(&config); err != nil {
 			initErr = fmt.Errorf("error unmarshalling config: %w", err)
+
 			return
 		}
 
 		if err := parseSubConfig("rpc", &config.RPC, v); err != nil {
 			initErr = err
+
 			return
 		}
 
@@ -58,6 +61,7 @@ func New() (*Config, error) {
 
 		if err := validator.New().Struct(config); err != nil {
 			initErr = handleValidationError(err)
+
 			return
 		}
 	})
@@ -85,7 +89,9 @@ func handleValidationError(err error) error {
 		for _, e := range validationErrs {
 			errStr.WriteString(fmt.Sprintf("validation failed for field '%s': %s\n", e.Field(), e.ActualTag()))
 		}
+
 		return fmt.Errorf("config validation failed: %s", errStr.String())
 	}
+
 	return fmt.Errorf("error validating config: %w", err)
 }

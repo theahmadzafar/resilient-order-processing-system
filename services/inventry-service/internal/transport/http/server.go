@@ -19,15 +19,14 @@ type Server struct {
 }
 
 func New(ctx context.Context, wg *sync.WaitGroup, cfg *Config, publicHandlers []Handler) *Server {
-
 	s := &Server{
 		wg: wg, ctx: ctx,
 		server: &http.Server{
 			Addr:              fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
 			Handler:           nil,
 			ReadHeaderTimeout: 10 * time.Second,
-			ReadTimeout:       cfg.ReadTimeout,
-			WriteTimeout:      cfg.WriteTimeout,
+			ReadTimeout:       cfg.Timeout,
+			WriteTimeout:      cfg.Timeout,
 			IdleTimeout:       30 * time.Second,
 		},
 		router: gin.New(),

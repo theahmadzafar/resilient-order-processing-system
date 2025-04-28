@@ -21,6 +21,7 @@ func NewLogger(cfg *Config) (*Logger, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	zapCfg.Level = level
 
 	zapLogger, err := zapCfg.Build()

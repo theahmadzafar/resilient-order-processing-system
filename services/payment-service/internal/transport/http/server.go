@@ -19,7 +19,6 @@ type Server struct {
 }
 
 func New(ctx context.Context, wg *sync.WaitGroup, cfg *Config, publicHandlers []Handler) *Server {
-
 	s := &Server{
 		wg: wg, ctx: ctx,
 		server: &http.Server{

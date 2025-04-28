@@ -13,8 +13,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func StartInventryService(ctx context.Context, wg *sync.WaitGroup) {
-
+func StartOrderService(ctx context.Context, wg *sync.WaitGroup) {
 	app := container.Build(ctx, wg)
 
 	_ = app.Get(constants.LoggerName).(*logger.Logger)
@@ -36,6 +35,6 @@ func StartInventryService(ctx context.Context, wg *sync.WaitGroup) {
 	if err := server.Shutdown(); err != nil {
 		zap.S().Errorf("Error stopping server: %s", err)
 	}
-	zap.S().Info("Service stopped.")
 
+	zap.S().Info("Service stopped.")
 }

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.30.0--rc1
-// source: services/inventry-service/pkg/api/main.proto
+// source: services/order-service/pkg/api/main.proto
 
 package api
 
@@ -19,51 +19,51 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Inventry_ListStocks_FullMethodName             = "/inventry.inventry/ListStocks"
-	Inventry_GetAvailableStocksByID_FullMethodName = "/inventry.inventry/GetAvailableStocksByID"
-	Inventry_HealthCheck_FullMethodName            = "/inventry.inventry/HealthCheck"
+	Order_GetOrderByID_FullMethodName    = "/order.order/GetOrderByID"
+	Order_UpdateOrderByID_FullMethodName = "/order.order/UpdateOrderByID"
+	Order_HealthCheck_FullMethodName     = "/order.order/HealthCheck"
 )
 
-// InventryClient is the client API for Inventry service.
+// OrderClient is the client API for Order service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type InventryClient interface {
-	ListStocks(ctx context.Context, in *ListStocksIn, opts ...grpc.CallOption) (*ListStocksOut, error)
-	GetAvailableStocksByID(ctx context.Context, in *GetAvailableStocksByIDIn, opts ...grpc.CallOption) (*GetAvailableStocksByIDIn, error)
+type OrderClient interface {
+	GetOrderByID(ctx context.Context, in *GetOrderByIDIn, opts ...grpc.CallOption) (*GetOrderByIDOut, error)
+	UpdateOrderByID(ctx context.Context, in *UpdateOrderByIDIn, opts ...grpc.CallOption) (*UpdateOrderByIDOut, error)
 	HealthCheck(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[Status, Status], error)
 }
 
-type inventryClient struct {
+type orderClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewInventryClient(cc grpc.ClientConnInterface) InventryClient {
-	return &inventryClient{cc}
+func NewOrderClient(cc grpc.ClientConnInterface) OrderClient {
+	return &orderClient{cc}
 }
 
-func (c *inventryClient) ListStocks(ctx context.Context, in *ListStocksIn, opts ...grpc.CallOption) (*ListStocksOut, error) {
+func (c *orderClient) GetOrderByID(ctx context.Context, in *GetOrderByIDIn, opts ...grpc.CallOption) (*GetOrderByIDOut, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListStocksOut)
-	err := c.cc.Invoke(ctx, Inventry_ListStocks_FullMethodName, in, out, cOpts...)
+	out := new(GetOrderByIDOut)
+	err := c.cc.Invoke(ctx, Order_GetOrderByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *inventryClient) GetAvailableStocksByID(ctx context.Context, in *GetAvailableStocksByIDIn, opts ...grpc.CallOption) (*GetAvailableStocksByIDIn, error) {
+func (c *orderClient) UpdateOrderByID(ctx context.Context, in *UpdateOrderByIDIn, opts ...grpc.CallOption) (*UpdateOrderByIDOut, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetAvailableStocksByIDIn)
-	err := c.cc.Invoke(ctx, Inventry_GetAvailableStocksByID_FullMethodName, in, out, cOpts...)
+	out := new(UpdateOrderByIDOut)
+	err := c.cc.Invoke(ctx, Order_UpdateOrderByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *inventryClient) HealthCheck(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[Status, Status], error) {
+func (c *orderClient) HealthCheck(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[Status, Status], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &Inventry_ServiceDesc.Streams[0], Inventry_HealthCheck_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &Order_ServiceDesc.Streams[0], Order_HealthCheck_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,119 +72,119 @@ func (c *inventryClient) HealthCheck(ctx context.Context, opts ...grpc.CallOptio
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type Inventry_HealthCheckClient = grpc.BidiStreamingClient[Status, Status]
+type Order_HealthCheckClient = grpc.BidiStreamingClient[Status, Status]
 
-// InventryServer is the server API for Inventry service.
-// All implementations should embed UnimplementedInventryServer
+// OrderServer is the server API for Order service.
+// All implementations should embed UnimplementedOrderServer
 // for forward compatibility.
-type InventryServer interface {
-	ListStocks(context.Context, *ListStocksIn) (*ListStocksOut, error)
-	GetAvailableStocksByID(context.Context, *GetAvailableStocksByIDIn) (*GetAvailableStocksByIDIn, error)
+type OrderServer interface {
+	GetOrderByID(context.Context, *GetOrderByIDIn) (*GetOrderByIDOut, error)
+	UpdateOrderByID(context.Context, *UpdateOrderByIDIn) (*UpdateOrderByIDOut, error)
 	HealthCheck(grpc.BidiStreamingServer[Status, Status]) error
 }
 
-// UnimplementedInventryServer should be embedded to have
+// UnimplementedOrderServer should be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedInventryServer struct{}
+type UnimplementedOrderServer struct{}
 
-func (UnimplementedInventryServer) ListStocks(context.Context, *ListStocksIn) (*ListStocksOut, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListStocks not implemented")
+func (UnimplementedOrderServer) GetOrderByID(context.Context, *GetOrderByIDIn) (*GetOrderByIDOut, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrderByID not implemented")
 }
-func (UnimplementedInventryServer) GetAvailableStocksByID(context.Context, *GetAvailableStocksByIDIn) (*GetAvailableStocksByIDIn, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAvailableStocksByID not implemented")
+func (UnimplementedOrderServer) UpdateOrderByID(context.Context, *UpdateOrderByIDIn) (*UpdateOrderByIDOut, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateOrderByID not implemented")
 }
-func (UnimplementedInventryServer) HealthCheck(grpc.BidiStreamingServer[Status, Status]) error {
+func (UnimplementedOrderServer) HealthCheck(grpc.BidiStreamingServer[Status, Status]) error {
 	return status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
 }
-func (UnimplementedInventryServer) testEmbeddedByValue() {}
+func (UnimplementedOrderServer) testEmbeddedByValue() {}
 
-// UnsafeInventryServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to InventryServer will
+// UnsafeOrderServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrderServer will
 // result in compilation errors.
-type UnsafeInventryServer interface {
-	mustEmbedUnimplementedInventryServer()
+type UnsafeOrderServer interface {
+	mustEmbedUnimplementedOrderServer()
 }
 
-func RegisterInventryServer(s grpc.ServiceRegistrar, srv InventryServer) {
-	// If the following call pancis, it indicates UnimplementedInventryServer was
+func RegisterOrderServer(s grpc.ServiceRegistrar, srv OrderServer) {
+	// If the following call pancis, it indicates UnimplementedOrderServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Inventry_ServiceDesc, srv)
+	s.RegisterService(&Order_ServiceDesc, srv)
 }
 
-func _Inventry_ListStocks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListStocksIn)
+func _Order_GetOrderByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrderByIDIn)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InventryServer).ListStocks(ctx, in)
+		return srv.(OrderServer).GetOrderByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Inventry_ListStocks_FullMethodName,
+		FullMethod: Order_GetOrderByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventryServer).ListStocks(ctx, req.(*ListStocksIn))
+		return srv.(OrderServer).GetOrderByID(ctx, req.(*GetOrderByIDIn))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Inventry_GetAvailableStocksByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAvailableStocksByIDIn)
+func _Order_UpdateOrderByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateOrderByIDIn)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InventryServer).GetAvailableStocksByID(ctx, in)
+		return srv.(OrderServer).UpdateOrderByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Inventry_GetAvailableStocksByID_FullMethodName,
+		FullMethod: Order_UpdateOrderByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventryServer).GetAvailableStocksByID(ctx, req.(*GetAvailableStocksByIDIn))
+		return srv.(OrderServer).UpdateOrderByID(ctx, req.(*UpdateOrderByIDIn))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Inventry_HealthCheck_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(InventryServer).HealthCheck(&grpc.GenericServerStream[Status, Status]{ServerStream: stream})
+func _Order_HealthCheck_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(OrderServer).HealthCheck(&grpc.GenericServerStream[Status, Status]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type Inventry_HealthCheckServer = grpc.BidiStreamingServer[Status, Status]
+type Order_HealthCheckServer = grpc.BidiStreamingServer[Status, Status]
 
-// Inventry_ServiceDesc is the grpc.ServiceDesc for Inventry service.
+// Order_ServiceDesc is the grpc.ServiceDesc for Order service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Inventry_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "inventry.inventry",
-	HandlerType: (*InventryServer)(nil),
+var Order_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "order.order",
+	HandlerType: (*OrderServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ListStocks",
-			Handler:    _Inventry_ListStocks_Handler,
+			MethodName: "GetOrderByID",
+			Handler:    _Order_GetOrderByID_Handler,
 		},
 		{
-			MethodName: "GetAvailableStocksByID",
-			Handler:    _Inventry_GetAvailableStocksByID_Handler,
+			MethodName: "UpdateOrderByID",
+			Handler:    _Order_UpdateOrderByID_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "HealthCheck",
-			Handler:       _Inventry_HealthCheck_Handler,
+			Handler:       _Order_HealthCheck_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
 	},
-	Metadata: "services/inventry-service/pkg/api/main.proto",
+	Metadata: "services/order-service/pkg/api/main.proto",
 }

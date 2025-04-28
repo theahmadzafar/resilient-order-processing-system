@@ -1,11 +1,15 @@
 package constants
 
 const (
-	ConfigName   = "Config"
-	LoggerName   = "Logger"
-	DatabaseName = "PgSQL"
-	RPCName      = "RPC"
-	ServerName   = "Server"
+	ConfigName = "Config"
+	LoggerName = "Logger"
+	RPCName    = "RPC"
+	ServerName = "Server"
 
-	MetaHandlerName = "MetaHandler"
+	MetaHandlerName     = "MetaHandler"
+	InventryHandlerName = "InventryHandler"
+
+	InventryServiceName = "InventryService"
+
+	MockInventryName = "MockInventry"
 )

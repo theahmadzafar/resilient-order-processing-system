@@ -6,12 +6,14 @@ import (
 	"sync"
 
 	"github.com/sarulabs/di"
-	mockdatabase "github.com/theahmadzafar/resilient-order-processing-system/services/inventry-service/pkg/mock_database"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/config"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/constants"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/logger"
+	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/services"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/transport/http"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/transport/rpc"
+	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/pkg/inventry"
+	mockdatabase "github.com/theahmadzafar/resilient-order-processing-system/services/order-service/pkg/mock_database"
 )
 
 var container di.Container
@@ -36,11 +38,12 @@ func Build(ctx context.Context, wg *sync.WaitGroup) di.Container {
 					if err != nil {
 						return nil, fmt.Errorf("can't initialize zap logger: %v", err)
 					}
+
 					return zapLogger, nil
 				},
 			},
 			{
-				Name: constants.DatabaseName,
+				Name: constants.MockOrderRepoName,
 				Build: func(ctn di.Container) (interface{}, error) {
 
 					return mockdatabase.NewMockConnection()
@@ -53,6 +56,7 @@ func Build(ctx context.Context, wg *sync.WaitGroup) di.Container {
 
 					var publicHandlers = []http.Handler{
 						ctn.Get(constants.MetaHandlerName).(http.Handler),
+						ctn.Get(constants.OrderHandlerName).(http.Handler),
 					}
 
 					return http.New(ctx, wg, cfg.Server, publicHandlers), nil
@@ -62,16 +66,27 @@ func Build(ctx context.Context, wg *sync.WaitGroup) di.Container {
 				Name: constants.RPCName,
 				Build: func(ctn di.Container) (interface{}, error) {
 					cfg := ctn.Get(constants.ConfigName).(*config.Config)
+					orderSvc := ctn.Get(constants.OrderServiceName).(*services.OrderService)
 
 					return rpc.NewHandler(
 						cfg.RPC,
-					), nil
+						orderSvc), nil
+				},
+			}, {
+				Name: constants.InventryMicroSvcName,
+				Build: func(ctn di.Container) (interface{}, error) {
+					cfg := ctn.Get(constants.ConfigName).(*config.Config)
+					client, err := inventry.NewClient(cfg.Inventry)
+					if err != nil {
+						return nil, err
+					}
+
+					return client, nil
 				},
 			},
 		}
 
-		// defs = append(defs, BuildServices()...)
-		// defs = append(defs, BuildRepositories()...)
+		defs = append(defs, BuildServices()...)
 		defs = append(defs, BuildHandlers()...)
 
 		if err := builder.Add(defs...); err != nil {

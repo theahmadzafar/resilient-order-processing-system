@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package inventry;
+package order;
 
 option go_package = "./api";
 
@@ -8,23 +8,23 @@ message Status {
   string status = 1;
 }
 
-service inventry {
-  rpc ListStocks(ListStocksIn) returns (ListStocksOut) {}
-  rpc GetAvailableStocksByID(GetAvailableStocksByIDIn) returns (GetAvailableStocksByIDIn) {}
-  rpc HealthCheck         (stream Status)           returns (stream Status) {}
+service order {
+  rpc GetOrderByID(GetOrderByIDIn) returns (GetOrderByIDOut) {}
+  rpc UpdateOrderByID(UpdateOrderByIDIn) returns (UpdateOrderByIDOut) {} 
+  rpc HealthCheck(stream Status)returns (stream Status) {}
 }
 
-message ListStocksIn {
+message GetOrderByIDIn {
     string status = 1;
   }
 
-message ListStocksOut {
+message GetOrderByIDOut {
       string status = 1;
     }
-message GetAvailableStocksByIDIn {
+message UpdateOrderByIDIn {
     string status = 1;
   }
 
-message GetAvailableStocksByIDOut {
+message UpdateOrderByIDOut {
       string status = 1;
-    }
+}

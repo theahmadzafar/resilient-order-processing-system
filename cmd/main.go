@@ -6,9 +6,7 @@ import (
 	"sync"
 	"time"
 
-	inventryservice "github.com/theahmadzafar/resilient-order-processing-system/services/inventry-service"
 	orderservice "github.com/theahmadzafar/resilient-order-processing-system/services/order-service"
-	paymentservice "github.com/theahmadzafar/resilient-order-processing-system/services/payment-service"
 	"github.com/theahmadzafar/resilient-order-processing-system/utils"
 	"go.uber.org/zap"
 )
@@ -20,9 +18,9 @@ func main() {
 	ctx := context.Background()
 	wg := &sync.WaitGroup{}
 
-	go inventryservice.StartInventryService(ctx, wg)
-	go orderservice.StartInventryService(ctx, wg)
-	go paymentservice.StartPaymentService(ctx, wg)
+	// go inventryservice.StartInventryService(ctx, wg)
+	go orderservice.StartOrderService(ctx, wg)
+	// go paymentservice.StartPaymentService(ctx, wg)
 
 	zap.S().Infof("Up and running (%s)", time.Since(now))
 	zap.S().Infof("Got %s signal. Shutting down...", <-utils.WaitTermSignal())
