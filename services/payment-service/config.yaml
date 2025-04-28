@@ -1,0 +1,14 @@
+server:
+  host: 127.0.0.1
+  port: 7710
+  readTimeout: 300s
+  writeTimeout: 300s
+
+rpc:
+  host: 127.0.0.1
+  port: 7700
+  maxProcessingTime: 1000000ms
+  tls: false
+
+logger:
+  logLevel: error

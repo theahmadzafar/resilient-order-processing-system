@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  overlord:
+    container_name: overlord-service
+    build:
+      context: .
+      args:
+        - MODE=local
+    ports:
+      - "5001:5001"
+      - "7001:7001"
+    restart: always
