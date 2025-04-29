@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "6421f932-807e-4211-9f90-ffed8ff2e264",
+		"name": "\"Resilient Order Processing System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42558868"
+	},
+	"item": [
+		{
+			"name": "inventry-stocks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/inventry/stocks/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"inventry",
+						"stocks",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "orders-status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/orders/status/?order_id=FEE4C0AF-6BEA-49AF-81F2-E9E63CC98555",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"orders",
+						"status",
+						""
+					],
+					"query": [
+						{
+							"key": "order_id",
+							"value": "FEE4C0AF-6BEA-49AF-81F2-E9E63CC98555"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "place",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"list\": [\n    {\n      \"id\": \"bdc38c99-c74d-4053-8897-7ea0dbd428f8\",\n      \"count\": 2\n    }\n  ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/orders/place",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"orders",
+						"place"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "orders-payment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"list\": [\n    {\n      \"id\": \"bdc38c99-c74d-4053-8897-7ea0dbd428f8\",\n      \"order_id\": \"bdc38c99-c74d-4053-8897-7ea0dbd423f8\"\n    }\n  ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/payment/pay",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"payment",
+						"pay"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}

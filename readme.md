@@ -46,6 +46,7 @@ testing  `completed`
 ## Working flow
 
 ## API Endpoints
+  postman api collection is added for easy to import 
 
 ### 1. Get Inventory Stocks
 Fetch all available inventory items from the inventry svc
