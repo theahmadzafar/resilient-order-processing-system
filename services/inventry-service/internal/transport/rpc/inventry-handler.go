@@ -21,7 +21,8 @@ func (h Handler) GetAvailableStocksByID(ctx context.Context, in *inventry.GetAva
 		return nil, status.Error(codes.NotFound, err.Error())
 	}
 
-	return &inventry.GetAvailableStocksByIDOut{Item: &inventry.Item{Id: item.ID.String(), Name: item.Name, Count: item.Count}}, nil
+	return &inventry.GetAvailableStocksByIDOut{Item: &inventry.Item{
+		Id: item.ID.String(), Name: item.Name, Count: item.Count}}, nil
 }
 func (h Handler) BuyStocksByID(ctx context.Context, in *inventry.BuyStocksByIDIn) (*inventry.BuyStocksByIDOut, error) {
 	ID, err := uuid.Parse(in.Id)

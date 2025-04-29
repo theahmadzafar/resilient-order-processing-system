@@ -44,6 +44,7 @@ func (s OrderService) PlaceOrder(ctx context.Context, req entities.OrderRequest)
 
 func (s OrderService) GetOrder(ctx context.Context, req entities.GetOrderRequest) (*entities.GetOrderResponse, error) {
 	res := &entities.GetOrderResponse{}
+
 	for _, item := range s.orderRepo.List {
 		if req.OrderID == item.ID {
 			res = &entities.GetOrderResponse{
@@ -62,6 +63,7 @@ func (s OrderService) GetOrder(ctx context.Context, req entities.GetOrderRequest
 			}
 		}
 	}
+
 	if res.ID == uuid.Nil {
 		return nil, errors.New("no record found")
 	}
