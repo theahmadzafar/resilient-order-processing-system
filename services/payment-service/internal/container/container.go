@@ -10,7 +10,6 @@ import (
 	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/constants"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/logger"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/transport/http"
-	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/transport/rpc"
 	mockdatabase "github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/pkg/mock_database"
 )
 
@@ -41,7 +40,7 @@ func Build(ctx context.Context, wg *sync.WaitGroup) di.Container {
 				},
 			},
 			{
-				Name: constants.DatabaseName,
+				Name: constants.MockPaymentRepoName,
 				Build: func(ctn di.Container) (interface{}, error) {
 
 					return mockdatabase.NewMockConnection()
@@ -54,25 +53,15 @@ func Build(ctx context.Context, wg *sync.WaitGroup) di.Container {
 
 					var publicHandlers = []http.Handler{
 						ctn.Get(constants.MetaHandlerName).(http.Handler),
+						ctn.Get(constants.PaymentHandlerName).(http.Handler),
 					}
 
 					return http.New(ctx, wg, cfg.Server, publicHandlers), nil
 				},
 			},
-			{
-				Name: constants.RPCName,
-				Build: func(ctn di.Container) (interface{}, error) {
-					cfg := ctn.Get(constants.ConfigName).(*config.Config)
-
-					return rpc.NewHandler(
-						cfg.RPC,
-					), nil
-				},
-			},
 		}
 
-		// defs = append(defs, BuildServices()...)
-		// defs = append(defs, BuildRepositories()...)
+		defs = append(defs, BuildServices()...)
 		defs = append(defs, BuildHandlers()...)
 
 		if err := builder.Add(defs...); err != nil {

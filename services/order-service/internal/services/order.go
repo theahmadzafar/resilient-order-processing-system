@@ -18,14 +18,16 @@ type OrderService struct {
 
 func NewOrderService(orderRepo *mockdatabase.OrderRepo, inventryMicroSvc inventry.Client) *OrderService {
 	return &OrderService{
-		orderRepo: orderRepo, inventryMicroSvc: inventryMicroSvc,
+		orderRepo:        orderRepo,
+		inventryMicroSvc: inventryMicroSvc,
 	}
 }
 func (s OrderService) PlaceOrder(ctx context.Context, req entities.OrderRequest) error {
 	list := make([]mockdatabase.Item, 0)
 
 	for _, item := range req.List {
-		out, err := s.inventryMicroSvc.GetAvailableStocksByID(ctx, &inventry.GetAvailableStocksByIDIn{Id: item.ID.String()})
+		out, err := s.inventryMicroSvc.GetAvailableStocksByID(ctx,
+			&inventry.GetAvailableStocksByIDIn{Id: item.ID.String()})
 		if err != nil {
 			return err
 		}
@@ -35,6 +37,17 @@ func (s OrderService) PlaceOrder(ctx context.Context, req entities.OrderRequest)
 		}
 
 		list = append(list, mockdatabase.Item{ID: item.ID, Name: out.Item.Name, Count: item.Count})
+	}
+
+	for _, item := range list {
+		_, err := s.inventryMicroSvc.BuyStocksByID(ctx, &inventry.BuyStocksByIDIn{
+			Count: item.Count,
+			Id:    item.ID.String(),
+		})
+
+		if err != nil {
+			return err
+		}
 	}
 
 	s.orderRepo.List = append(s.orderRepo.List, mockdatabase.Order{ID: uuid.New(), Status: "pending", Items: list})
@@ -55,6 +68,7 @@ func (s OrderService) GetOrder(ctx context.Context, orderId uuid.UUID) (*entitie
 			}
 
 			for _, orderItem := range item.Items {
+
 				res.Items = append(res.Items, entities.Item{
 					ID:    orderItem.ID,
 					Name:  orderItem.Name,

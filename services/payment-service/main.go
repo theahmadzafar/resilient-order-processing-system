@@ -8,7 +8,6 @@ import (
 	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/container"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/logger"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/transport/http"
-	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/transport/rpc"
 	"github.com/theahmadzafar/resilient-order-processing-system/utils"
 	"go.uber.org/zap"
 )
@@ -23,12 +22,6 @@ func StartPaymentService(ctx context.Context, wg *sync.WaitGroup) {
 	zap.S().Info("Starting http server...")
 
 	go server.Run()
-
-	zap.S().Info("Starting grpc server...")
-
-	rpcHandler := app.Get(constants.RPCName).(*rpc.Handler)
-
-	go rpc.StartUnsecureRPCServer(rpcHandler)
 
 	zap.S().Infof("Got %s signal. Shutting down...", <-utils.WaitTermSignal())
 

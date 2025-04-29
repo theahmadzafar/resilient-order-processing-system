@@ -10,14 +10,12 @@ import (
 	"github.com/spf13/viper"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/logger"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/transport/http"
-	"github.com/theahmadzafar/resilient-order-processing-system/services/payment-service/internal/transport/rpc"
 )
 
 var config *Config
 var once sync.Once
 
 type Config struct {
-	RPC    *rpc.Config  `validate:"required"`
 	Server *http.Config `validate:"required"`
 	Logger *logger.Config
 }
@@ -39,12 +37,6 @@ func New() (*Config, error) {
 
 		if err := v.Unmarshal(&config); err != nil {
 			initErr = fmt.Errorf("error unmarshalling config: %w", err)
-
-			return
-		}
-
-		if err := parseSubConfig("rpc", &config.RPC, v); err != nil {
-			initErr = err
 
 			return
 		}
