@@ -55,11 +55,11 @@ func (s OrderService) PlaceOrder(ctx context.Context, req entities.OrderRequest)
 	return nil
 }
 
-func (s OrderService) GetOrder(ctx context.Context, orderId uuid.UUID) (*entities.GetOrderResponse, error) {
+func (s OrderService) GetOrder(ctx context.Context, orderID uuid.UUID) (*entities.GetOrderResponse, error) {
 	res := &entities.GetOrderResponse{}
 
 	for _, item := range s.orderRepo.List {
-		if orderId == item.ID {
+		if orderID == item.ID {
 			res = &entities.GetOrderResponse{
 				ID:        item.ID,
 				Status:    item.Status,
@@ -68,7 +68,6 @@ func (s OrderService) GetOrder(ctx context.Context, orderId uuid.UUID) (*entitie
 			}
 
 			for _, orderItem := range item.Items {
-
 				res.Items = append(res.Items, entities.Item{
 					ID:    orderItem.ID,
 					Name:  orderItem.Name,

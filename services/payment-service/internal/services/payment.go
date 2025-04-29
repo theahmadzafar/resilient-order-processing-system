@@ -22,7 +22,7 @@ func (s PaymentService) Pay(ctx context.Context, req entities.PaymentRequest) er
 		OrderID: req.OrderID,
 	})
 
-	//todo event is added to the distributed mechanism so the order service can dispatch the order
+	// todo event is added to the distributed mechanism so the order service can dispatch the order
 
 	return nil
 }

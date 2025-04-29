@@ -62,14 +62,16 @@ func (h *OrderHandler) orderStatus(ctx *gin.Context) {
 
 		return
 	}
-	orderId, err := uuid.Parse(req.OrderID)
+
+	orderID, err := uuid.Parse(req.OrderID)
 	if err != nil {
 		zap.S().Error("validation failed", zap.Error(err))
 		http.BadRequest(ctx, err.Error(), nil)
 
 		return
 	}
-	res, err := h.orderSvc.GetOrder(opCtx, orderId)
+
+	res, err := h.orderSvc.GetOrder(opCtx, orderID)
 	if err != nil {
 		http.ServerError(ctx, err.Error(), nil)
 
