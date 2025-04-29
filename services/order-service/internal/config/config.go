@@ -11,7 +11,7 @@ import (
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/logger"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/transport/http"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/transport/rpc"
-	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/pkg/inventry"
+	"github.com/theahmadzafar/resilient-order-processing-system/services/proto/inventry"
 )
 
 var config *Config

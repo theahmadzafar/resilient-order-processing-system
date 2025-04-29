@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	inventryservice "github.com/theahmadzafar/resilient-order-processing-system/services/inventry-service"
 	orderservice "github.com/theahmadzafar/resilient-order-processing-system/services/order-service"
 	"github.com/theahmadzafar/resilient-order-processing-system/utils"
 	"go.uber.org/zap"
@@ -18,7 +19,7 @@ func main() {
 	ctx := context.Background()
 	wg := &sync.WaitGroup{}
 
-	// go inventryservice.StartInventryService(ctx, wg)
+	go inventryservice.StartInventryService(ctx, wg)
 	go orderservice.StartOrderService(ctx, wg)
 	// go paymentservice.StartPaymentService(ctx, wg)
 

@@ -19,5 +19,5 @@ type Order struct {
 	// available count
 	Items []Item
 	// paymentID
-	PaymentID string
+	PaymentID uuid.UUID
 }

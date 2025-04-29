@@ -4,8 +4,8 @@ import (
 	"github.com/sarulabs/di"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/constants"
 	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/internal/services"
-	"github.com/theahmadzafar/resilient-order-processing-system/services/order-service/pkg/inventry"
 	mockdatabase "github.com/theahmadzafar/resilient-order-processing-system/services/order-service/pkg/mock_database"
+	"github.com/theahmadzafar/resilient-order-processing-system/services/proto/inventry"
 )
 
 func BuildServices() []di.Def {

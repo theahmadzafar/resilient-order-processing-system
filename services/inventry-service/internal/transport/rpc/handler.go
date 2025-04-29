@@ -4,16 +4,16 @@ import (
 	"io"
 
 	"github.com/theahmadzafar/resilient-order-processing-system/services/inventry-service/internal/services"
-	"github.com/theahmadzafar/resilient-order-processing-system/services/inventry-service/pkg/api"
+	"github.com/theahmadzafar/resilient-order-processing-system/services/proto/inventry"
 )
 
 type Handler struct {
-	api.InventryServer
+	inventry.InventryServer
 	inventrySvc *services.InventryService
 	cfg         *Config
 }
 
-func (h *Handler) HealthCheck(stream api.Inventry_HealthCheckServer) error {
+func (h *Handler) HealthCheck(stream inventry.Inventry_HealthCheckServer) error {
 	for {
 		msg, err := stream.Recv()
 		if err != nil {

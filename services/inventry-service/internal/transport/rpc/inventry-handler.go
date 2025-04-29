@@ -4,13 +4,13 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/theahmadzafar/resilient-order-processing-system/services/inventry-service/pkg/api"
+	"github.com/theahmadzafar/resilient-order-processing-system/services/proto/inventry"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (h Handler) GetAvailableStocksByID(ctx context.Context, in *api.GetAvailableStocksByIDIn) (
-	*api.GetAvailableStocksByIDOut, error) {
+func (h Handler) GetAvailableStocksByID(ctx context.Context, in *inventry.GetAvailableStocksByIDIn) (
+	*inventry.GetAvailableStocksByIDOut, error) {
 	ID, err := uuid.Parse(in.Id)
 	if err != nil {
 		return nil, status.Error(codes.Unknown, err.Error())
@@ -21,9 +21,9 @@ func (h Handler) GetAvailableStocksByID(ctx context.Context, in *api.GetAvailabl
 		return nil, status.Error(codes.NotFound, err.Error())
 	}
 
-	return &api.GetAvailableStocksByIDOut{Item: &api.Item{Id: item.ID.String(), Name: item.Name, Count: item.Count}}, nil
+	return &inventry.GetAvailableStocksByIDOut{Item: &inventry.Item{Id: item.ID.String(), Name: item.Name, Count: item.Count}}, nil
 }
-func (h Handler) BuyStocksByID(ctx context.Context, in *api.BuyStocksByIDIn) (*api.BuyStocksByIDOut, error) {
+func (h Handler) BuyStocksByID(ctx context.Context, in *inventry.BuyStocksByIDIn) (*inventry.BuyStocksByIDOut, error) {
 	ID, err := uuid.Parse(in.Id)
 	if err != nil {
 		return nil, status.Error(codes.Unknown, err.Error())
@@ -34,5 +34,5 @@ func (h Handler) BuyStocksByID(ctx context.Context, in *api.BuyStocksByIDIn) (*a
 		return nil, status.Error(codes.NotFound, err.Error())
 	}
 
-	return &api.BuyStocksByIDOut{Status: "success"}, nil
+	return &inventry.BuyStocksByIDOut{Status: "success"}, nil
 }
