@@ -42,11 +42,11 @@ func (s OrderService) PlaceOrder(ctx context.Context, req entities.OrderRequest)
 	return nil
 }
 
-func (s OrderService) GetOrder(ctx context.Context, req entities.GetOrderRequest) (*entities.GetOrderResponse, error) {
+func (s OrderService) GetOrder(ctx context.Context, orderId uuid.UUID) (*entities.GetOrderResponse, error) {
 	res := &entities.GetOrderResponse{}
 
 	for _, item := range s.orderRepo.List {
-		if req.OrderID == item.ID {
+		if orderId == item.ID {
 			res = &entities.GetOrderResponse{
 				ID:        item.ID,
 				Status:    item.Status,

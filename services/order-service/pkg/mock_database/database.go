@@ -1,7 +1,9 @@
 package mockdatabase
 
 func NewMockConnection() (*OrderRepo, error) {
-	inv := OrderRepo{}
+	inv := OrderRepo{
+		List: []Order{},
+	}
 
 	return &inv, nil
 }

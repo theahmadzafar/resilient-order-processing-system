@@ -12,7 +12,7 @@ type OrderRequest struct {
 }
 
 type GetOrderRequest struct {
-	OrderID uuid.UUID `json:"order_id"  form:"order_id" required:"true"`
+	OrderID string `json:"order_id"  form:"order_id" required:"true"`
 }
 
 type GetOrderResponse struct {

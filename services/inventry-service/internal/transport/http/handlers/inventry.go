@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"errors"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +15,7 @@ type InventryHandler struct {
 
 func NewInventryHandler(inventrySrv *services.InventryService, timeout time.Duration) *InventryHandler {
 	return &InventryHandler{
-		timeout: timeout,
+		timeout: timeout, inventrySrv: inventrySrv,
 	}
 }
 func (h *InventryHandler) Register(router *gin.RouterGroup) {
@@ -27,7 +26,9 @@ func (h *InventryHandler) Register(router *gin.RouterGroup) {
 func (h *InventryHandler) stocks(ctx *gin.Context) {
 	stocks, err := h.inventrySrv.Stocks()
 	if err != nil {
-		http.ServerError(ctx, errors.New("something went wrong"), nil)
+		http.ServerError(ctx, err.Error(), nil)
+
+		return
 	}
 
 	http.OK(ctx, stocks, nil)

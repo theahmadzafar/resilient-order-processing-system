@@ -20,3 +20,27 @@ tests:
 
 lint:
 	golangci-lint run -v
+docker-up:
+	docker compose build --no-cache --progress=plain
+	docker compose up -d
+	
+
+docker-dryrun:
+	docker compose \
+	-f compose.yaml \
+	--progress=plain \
+	--project-directory . \
+	up --detach \
+	--dry-run \
+
+docker-down: 
+	docker compose \
+	-f compose.yaml \
+	--progress=plain \
+	down 
+
+docker-stats: 
+	docker compose \
+	-f compose.yaml \
+	--progress=plain \
+	stats 

@@ -1,10 +1,11 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type Response struct {
@@ -40,42 +41,42 @@ func new(status int, meta map[string]interface{}, data interface{}) *Response {
 
 func OK(ctx *gin.Context, data interface{}, meta map[string]interface{}) {
 	r := new(http.StatusOK, meta, data)
-	ctx.JSON(r.Status, data)
+	ctx.JSON(r.Status, r)
 }
 
 func BadRequest(ctx *gin.Context, data interface{}, meta map[string]interface{}) {
 	zap.S().Error(data)
 	r := new(http.StatusBadRequest, meta, data)
-	ctx.JSON(r.Status, data)
+	ctx.JSON(r.Status, r)
 }
 
 func Unauthorized(ctx *gin.Context, data interface{}, meta map[string]interface{}) {
 	zap.S().Error(data)
 	r := new(http.StatusUnauthorized, meta, data)
-	ctx.JSON(r.Status, data)
+	ctx.JSON(r.Status, r)
 }
 
 func Forbidden(ctx *gin.Context, data interface{}, meta map[string]interface{}) {
 	zap.S().Error(data)
 	r := new(http.StatusForbidden, meta, data)
-	ctx.JSON(r.Status, data)
+	ctx.JSON(r.Status, r)
 }
 
 func NotFound(ctx *gin.Context, data interface{}, meta map[string]interface{}) {
 	zap.S().Error(data)
 	r := new(http.StatusNotFound, meta, data)
-	ctx.JSON(r.Status, data)
+	ctx.JSON(r.Status, r)
 }
 
 func ServerError(ctx *gin.Context, data interface{}, meta map[string]interface{}) {
 	zap.S().Error(data)
 	r := new(http.StatusInternalServerError, meta, data)
-	ctx.JSON(r.Status, data)
+	ctx.JSON(r.Status, r)
 }
 
 func ResponseByCode(ctx *gin.Context, code int, data interface{}, meta map[string]interface{}) {
 	zap.S().Info(data)
 	zap.S().Info("code: " + strconv.Itoa(code))
 	r := new(code, meta, data)
-	ctx.JSON(r.Status, data)
+	ctx.JSON(r.Status, r)
 }

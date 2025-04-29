@@ -1,10 +1,10 @@
 server:
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 7510
   timeout: 300s 
 
 rpc:
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 7500
   maxProcessingTime: 1000000ms
   tls: false

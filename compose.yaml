@@ -1,0 +1,33 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: always
+
+  resilient-order-processing-system:
+    container_name: resilient-order-processing-system
+    build:
+      context: . 
+    # ports:
+    #   - "7500:7500" # inventry rpc
+    #   - "7510:7510" # inventry http
+    #   - "7600:7600" # order rpc
+    #   - "7610:7610" # order http
+    #   - "7700:7700" # payment rpc
+    #   - "7710:7710" # payment http
+    
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO-  localhost:7500/health || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+    restart: always
+    depends_on:
+      nginx:
+        condition: service_started
