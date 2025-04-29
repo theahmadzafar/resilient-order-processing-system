@@ -114,7 +114,7 @@ Get the status of a placed order.
 
 **Request:**
 ```bash
-      curl --location 'http://localhost:7710/payment/pay' \
+      curl --location 'http://localhost:8000/payment/pay' \
 --header 'Content-Type: application/json' \
 --data '{
   "list": [
